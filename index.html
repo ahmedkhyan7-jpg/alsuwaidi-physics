@@ -1,1 +1,302 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#071629">
+<title>منصة السويدي التعليمية</title>
 
+<style>
+*{box-sizing:border-box}
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#071629;
+color:white;
+}
+header{
+background:#102642;
+padding:22px 14px;
+text-align:center;
+border-bottom:2px solid #d5a83d;
+}
+.logo{font-size:28px;color:#e7bd58;font-weight:bold}
+header p{color:#ddd}
+button{
+border:0;
+padding:13px;
+border-radius:9px;
+cursor:pointer;
+font-weight:bold;
+}
+.gold{background:#d5a83d;color:#071629}
+nav{
+display:flex;
+gap:8px;
+overflow-x:auto;
+padding:12px;
+background:#102642;
+}
+nav button{white-space:nowrap}
+.container{padding:15px;max-width:950px;margin:auto}
+.hero{
+background:linear-gradient(135deg,#15385c,#071629);
+padding:25px 15px;
+border:1px solid #d5a83d;
+border-radius:15px;
+text-align:center;
+}
+h2{color:#e7bd58}
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(145px,1fr));
+gap:12px;
+}
+.card{
+background:#142c48;
+padding:20px 12px;
+border-radius:12px;
+border:1px solid #294767;
+text-align:center;
+}
+.card button{margin-top:12px;width:100%}
+.section{margin-top:25px}
+input,select,textarea{
+width:100%;
+padding:13px;
+margin:7px 0;
+border:1px solid #53677e;
+border-radius:8px;
+background:#102642;
+color:white;
+}
+.item{
+background:#142c48;
+padding:13px;
+margin:10px 0;
+border-radius:9px;
+overflow-wrap:anywhere;
+}
+.item a{color:#e7bd58}
+.hidden{display:none}
+footer{
+text-align:center;
+padding:25px;
+color:#aaa;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">⚙️ منصة السويدي</div>
+<p>بوابتك إلى عالم الفيزياء</p>
+</header>
+
+<nav>
+<button class="gold" onclick="home()">الرئيسية</button>
+<button class="gold" onclick="show('library')">المكتبة</button>
+<button class="gold" onclick="show('lab')">المختبر 3D</button>
+<button class="gold" onclick="show('tests')">الاختبارات</button>
+<button class="gold" onclick="show('admin')">إدارة المحتوى</button>
+</nav>
+
+<main class="container">
+
+<div id="home">
+
+<div class="hero">
+<h2>مرحباً بك في منصة السويدي</h2>
+<p>تعلم الفيزياء بالفيديو والتجربة والمحاكاة.</p>
+<p>منهج الفيزياء اليمني – جميع المراحل الثانوية</p>
+</div>
+
+<div class="section">
+<h2>📚 اختر صفك الدراسي</h2>
+<div class="grid">
+<div class="card">
+<h3>الأول الثانوي</h3>
+<p>دروس وفيديوهات وملخصات</p>
+<button class="gold" onclick="grade(1)">دخول الصف</button>
+</div>
+<div class="card">
+<h3>الثاني الثانوي</h3>
+<p>دروس وفيديوهات وملخصات</p>
+<button class="gold" onclick="grade(2)">دخول الصف</button>
+</div>
+<div class="card">
+<h3>الثالث الثانوي</h3>
+<p>دروس وفيديوهات وملخصات</p>
+<button class="gold" onclick="grade(3)">دخول الصف</button>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>🔬 مختبر الفيزياء</h2>
+<div class="card">
+<p>تجارب ومحاكاة تفاعلية ثلاثية الأبعاد.</p>
+<button class="gold" onclick="show('lab')">دخول المختبر</button>
+</div>
+</div>
+
+</div>
+
+<div id="grade" class="hidden">
+<h2 id="gradeTitle"></h2>
+<div id="gradeContent"></div>
+<button class="gold" onclick="home()">العودة للرئيسية</button>
+</div>
+
+<div id="library" class="hidden">
+<h2>📚 مكتبة الفيزياء</h2>
+<input id="search" placeholder="ابحث عن كتاب أو ملخص أو فيديو..." oninput="render()">
+<div id="materials"></div>
+</div>
+
+<div id="admin" class="hidden">
+<h2>⚙️ إدارة المحتوى</h2>
+
+<div class="card">
+<h3>إضافة محتوى جديد</h3>
+
+<select id="targetGrade">
+<option value="1">الأول الثانوي</option>
+<option value="2">الثاني الثانوي</option>
+<option value="3">الثالث الثانوي</option>
+</select>
+
+<input id="title" placeholder="عنوان المحتوى">
+
+<select id="type">
+<option>فيديو</option>
+<option>كتاب PDF</option>
+<option>ملخص</option>
+<option>ملزمة</option>
+<option>نموذج اختبار</option>
+<option>شرح بالذكاء الاصطناعي</option>
+</select>
+
+<select id="source">
+<option>محتوى خاص بي</option>
+<option>مصدر خارجي</option>
+<option>محتوى منشأ بالذكاء الاصطناعي</option>
+</select>
+
+<input id="url" placeholder="رابط الفيديو أو الملف (اختياري)">
+
+<label>رفع ملف من الهاتف</label>
+<input type="file" id="file">
+
+<button class="gold" onclick="addMaterial()">إضافة المحتوى</button>
+
+<p style="color:#bbb;font-size:13px">
+هذه نسخة أولية لحفظ المحتوى في متصفح هذا الجهاز.
+التخزين السحابي وحساب المدير المحمي سنضيفهما في المرحلة التالية.
+</p>
+</div>
+</div>
+
+<div id="lab" class="hidden">
+<h2>🔬 مختبر الفيزياء ثلاثي الأبعاد</h2>
+<div class="card">
+<p>مختبر التجارب والمحاكاة الفيزيائية.</p>
+<p>سيضم محاكاة الحركة والقوى والمتجهات والطاقة والكهرباء والموجات.</p>
+<button class="gold" onclick="alert('سيتم تجهيز تجارب المختبر في المرحلة التالية')">
+فتح التجارب
+</button>
+</div>
+</div>
+
+<div id="tests" class="hidden">
+<h2>📝 الاختبارات</h2>
+<div class="card">
+<p>بنك أسئلة الفيزياء لجميع الصفوف الثانوية.</p>
+<p>اختبارات تفاعلية وتصحيح تلقائي.</p>
+</div>
+</div>
+
+</main>
+
+<footer>
+منصة السويدي التعليمية
+<p>إعداد: م. أشرف السويدي</p>
+</footer>
+
+<script>
+
+let materials=[];
+
+function show(id){
+document.querySelectorAll('main>div').forEach(x=>x.classList.add('hidden'));
+document.getElementById(id).classList.remove('hidden');
+if(id==='library')render();
+}
+
+function home(){show('home')}
+
+function grade(n){
+show('grade');
+document.getElementById('gradeTitle').innerText=
+'فيزياء الصف '+['','الأول','الثاني','الثالث'][n]+' الثانوي';
+document.getElementById('gradeContent').innerHTML=
+'<div class="card"><h3>فصول ودروس المنهج</h3><p>سيتم تنظيم جميع فصول الكتاب ودروسه هنا.</p><button class="gold" onclick="show(\\'library\\')">عرض المحتوى</button></div>';
+}
+
+function addMaterial(){
+let title=document.getElementById('title').value;
+let file=document.getElementById('file').files[0];
+let url=document.getElementById('url').value;
+
+if(!title || (!file && !url)){
+alert('أدخل عنوان المحتوى وارفع ملفاً أو أضف رابطاً');
+return;
+}
+
+let item={
+title,
+grade:document.getElementById('targetGrade').value,
+type:document.getElementById('type').value,
+source:document.getElementById('source').value,
+url,
+fileName:file?file.name:''
+};
+
+materials.push(item);
+localStorage.setItem('swMaterials',JSON.stringify(materials));
+
+alert('تمت إضافة بيانات المحتوى في هذه النسخة التجريبية');
+document.getElementById('title').value='';
+render();
+}
+
+function render(){
+let list=document.getElementById('materials');
+if(!list)return;
+let q=(document.getElementById('search')?.value||'').toLowerCase();
+
+let data=materials.filter(x=>x.title.toLowerCase().includes(q));
+
+list.innerHTML=data.map(x=>`
+<div class="item">
+<h3>${escapeHTML(x.title)}</h3>
+<p>الصف: ${x.grade} | ${escapeHTML(x.type)}</p>
+<p>المصدر: ${escapeHTML(x.source)}</p>
+${x.url?`<a href="${escapeHTML(x.url)}" target="_blank">فتح المحتوى</a>`:''}
+${x.fileName?`<p>الملف: ${escapeHTML(x.fileName)}</p>`:''}
+</div>`).join('') || '<p>لا يوجد محتوى مضاف بعد.</p>';
+}
+
+function escapeHTML(s){
+return String(s).replace(/[&<>"']/g,c=>({
+'&':'&amp;','<':'&lt;','>':'&gt;',
+'"':'&quot;',"'":'&#39;'
+}[c]));
+}
+
+materials=JSON.parse(localStorage.getItem('swMaterials')||'[]');
+
+</script>
+</body>
+  </html>
